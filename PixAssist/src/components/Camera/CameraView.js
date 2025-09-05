@@ -20,11 +20,29 @@ const CameraView = () => {
     (async () => {
       const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraStatus === 'granted');
-      
+
       const { status: mediaLibraryStatus } = await MediaLibrary.requestPermissionsAsync();
       setHasMediaLibraryPermission(mediaLibraryStatus === 'granted');
     })();
   }, []);
+
+  const handleTakePhoto = async () => {
+    if (cameraRef.current) {
+      try {
+        const photo = await cameraRef.current.takePictureAsync();
+        console.log('Photo taken:', photo.uri);
+        if (hasMediaLibraryPermission) {
+          await MediaLibrary.saveToLibraryAsync(photo.uri);
+          Alert.alert('Success', 'Photo saved to your library!');
+        } else {
+          Alert.alert('Permission denied', 'Cannot save photo without media library permission.');
+        }
+      } catch (error) {
+        console.error('Error taking photo:', error);
+        Alert.alert('Error', 'Could not take photo.');
+      }
+    }
+  };
 
   if (hasCameraPermission === null) {
     return (
@@ -58,7 +76,7 @@ const CameraView = () => {
           opacity={overlayOpacity}
           isVisible={overlaysVisible}
         />
-        
+
         {/* Camera Controls */}
         <CameraControls
           activeOverlay={activeOverlay}
@@ -67,6 +85,7 @@ const CameraView = () => {
           setOpacity={setOverlayOpacity}
           isVisible={overlaysVisible}
           setIsVisible={setOverlaysVisible}
+          onCapture={handleTakePhoto}
         />
       </Camera>
     </View>

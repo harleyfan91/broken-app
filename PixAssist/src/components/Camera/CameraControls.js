@@ -27,9 +27,9 @@ const CameraControls = ({
       <View style={styles.templateRow}>
         <Text style={styles.label}>Template:</Text>
         <View style={styles.templateButtons}>
-          {overlayOptions.map((option) => (
+          {overlayOptions.map((option, index) => (
             <TouchableOpacity
-              key={option.key}
+              key={`${option.key}-${index}`}
               style={[
                 styles.templateButton,
                 activeOverlay === option.key && styles.activeTemplate

@@ -12,23 +12,42 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "PixAssist Camera"
+args = "PixAssist Web Preview"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "PixAssist Mobile"
 
 [[workflows.workflow]]
-name = "PixAssist Camera"
+name = "PixAssist Web Preview"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd PixAssist && npm start -- --web --port 5000"
+args = "cd PixAssist && sleep 5 && npm run web -- --port 5000"
 waitForPort = 5000
 
 [workflows.workflow.metadata]
 outputType = "webview"
 
+[[workflows.workflow]]
+name = "PixAssist Mobile"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd PixAssist && yes | npx expo start --tunnel"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 8081
+externalPort = 8081
 
 [nix]
 channel = "stable-25_05"

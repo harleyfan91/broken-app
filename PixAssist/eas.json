@@ -13,6 +13,13 @@
     "preview": {
       "distribution": "internal",
       "ios": {
+        "resourceClass": "m1-medium",
+        "simulator": false
+      }
+    },
+    "testflight": {
+      "distribution": "store",
+      "ios": {
         "resourceClass": "m1-medium"
       }
     },
@@ -23,6 +30,13 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {},
+    "testflight": {
+      "ios": {
+        "appleId": "brandalchemyllc@gmail.com",
+        "ascAppId": "placeholder",
+        "appleTeamId": "placeholder"
+      }
+    }
   }
 }

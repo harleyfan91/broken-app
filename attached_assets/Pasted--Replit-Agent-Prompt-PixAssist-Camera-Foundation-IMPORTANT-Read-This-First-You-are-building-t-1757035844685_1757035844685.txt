@@ -1,0 +1,126 @@
+# Replit Agent Prompt: PixAssist Camera Foundation
+
+## IMPORTANT: Read This First
+You are building the foundation camera component for PixAssist. This is PHASE 1 ONLY - focus on getting a high-quality, working camera with basic overlays. Do NOT attempt to build the entire app at once.
+
+## Your Single Objective
+Build a working React Native camera application with basic overlay guidance system. Nothing more.
+
+## Step 1: Repository Setup
+1. Clone this exact repository: `https://github.com/mrousavy/react-native-vision-camera`
+2. Follow the repository's example app setup instructions precisely
+3. Ensure the basic camera functionality works before proceeding
+4. Do not modify the core camera implementation - only build UI layer on top
+
+## Step 2: Required Dependencies (Add These Only)
+```json
+{
+  "react-native-svg": "^13.0.0",
+  "react-native-gesture-handler": "^2.12.0",
+  "react-native-reanimated": "^3.4.0",
+  "react-native-vector-icons": "^10.0.0"
+}
+```
+
+**DO NOT add any other dependencies yet.** We will add them in future phases.
+
+## Step 3: Build Only These Universal Tools (From PRD Section 3.4)
+
+### Composition Basics (Use Native Views Only - No SVG Yet)
+1. **Rule of thirds grid** - Simple 2 vertical + 2 horizontal lines using React Native View components
+2. **Center focus guide** - Single circle or crosshair in screen center using View components  
+3. **Horizon level indicator** - Horizontal line across center using View component
+
+### Platform Format Overlays (Native Views Only)
+1. **Square (1:1)** crop frame overlay
+2. **Portrait (4:5)** crop frame overlay  
+3. **Story (9:16)** crop frame overlay
+
+### Basic Controls
+1. **Template selector** - Simple buttons to switch between the 6 overlay types above
+2. **Opacity slider** - Control overlay transparency (30-80%)
+3. **Toggle on/off** - Hide/show overlays completely
+
+## Implementation Requirements
+
+### Overlay Style Constants (Use This Exactly)
+```javascript
+const OVERLAY_STYLES = {
+  colors: {
+    primary: 'rgba(255, 255, 255, 0.8)',
+    subtle: 'rgba(255, 255, 255, 0.6)',
+    focus: 'rgba(255, 255, 0, 0.9)',
+  },
+  lineWeights: {
+    thin: 1,
+    medium: 1.5,
+    thick: 2,
+  },
+  spacing: {
+    gridRatio: 0.33333,
+    focusMargin: 60,
+  }
+};
+```
+
+### Performance Requirements
+- Overlays must NOT affect camera frame rate
+- Use `pointerEvents: 'none'` on all overlay components
+- Overlay changes should be <50ms
+- No lag during camera preview
+
+### File Structure (Keep Simple)
+```
+src/
+├── components/
+│   ├── Camera/
+│   │   ├── CameraView.js (main camera component)
+│   │   ├── OverlaySystem.js (manages overlay rendering)
+│   │   └── CameraControls.js (template selector, opacity)
+│   └── Overlays/
+│       ├── RuleOfThirdsGrid.js
+│       ├── CenterFocus.js
+│       ├── HorizonLevel.js
+│       └── FormatFrames.js (1:1, 4:5, 9:16 frames)
+└── constants/
+    └── overlayStyles.js
+```
+
+## What NOT to Build
+- ❌ Image editing/enhancement
+- ❌ Photo saving functionality  
+- ❌ Template categories beyond the 6 basic overlays
+- ❌ SVG overlays (only native Views)
+- ❌ Complex animations
+- ❌ External template loading
+- ❌ Image cropping functionality
+- ❌ Gallery integration
+- ❌ Any advanced features from the PRD
+
+## Success Criteria
+✅ Camera preview works smoothly  
+✅ Rule of thirds grid toggles on/off  
+✅ Center focus guide works  
+✅ Horizon level line works  
+✅ Three format frames (1:1, 4:5, 9:16) work  
+✅ Template selector switches between overlays  
+✅ Opacity slider changes overlay transparency  
+✅ No performance impact on camera  
+✅ Clean, simple code structure  
+
+## Testing Instructions
+1. Test camera launches and shows preview
+2. Test each overlay individually
+3. Test overlay switching is smooth (<50ms)
+4. Test opacity changes work smoothly
+5. Test toggle on/off works
+6. Verify overlays don't block camera functionality
+
+## Important Notes
+- Follow the vision-camera repository's setup guide exactly
+- Use only React Native View components for overlays
+- Keep code simple and readable
+- Focus on performance - camera must stay smooth
+- Test on the actual camera preview, not just simulator
+
+Start with Step 1 (clone repository) and work through each step methodically. Do not skip ahead or add extra features.

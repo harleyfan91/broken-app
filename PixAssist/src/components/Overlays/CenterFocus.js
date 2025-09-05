@@ -8,7 +8,7 @@ const CenterFocus = ({ width, height, opacity = 0.9 }) => {
   const radius = 60;
 
   return (
-    <View style={styles.container} pointerEvents="none">
+    <View style={[styles.container, { pointerEvents: 'none' }]}>
       {/* Center circle */}
       <View 
         style={[

@@ -35,7 +35,7 @@ const OverlaySystem = ({
   };
 
   return (
-    <View style={styles.container} pointerEvents="none">
+    <View style={[styles.container, { pointerEvents: 'none' }]}>
       {renderOverlay()}
     </View>
   );

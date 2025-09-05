@@ -47,7 +47,7 @@ const FormatFrames = ({ width, height, format, opacity = 0.8 }) => {
   if (!frameDimensions) return null;
 
   return (
-    <View style={styles.container} pointerEvents="none">
+    <View style={[styles.container, { pointerEvents: 'none' }]}>
       {/* Semi-transparent overlay outside frame */}
       <View style={[styles.overlay, { opacity: opacity * 0.3 }]}>
         {/* Top overlay */}

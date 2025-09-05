@@ -6,7 +6,7 @@ const HorizonLevel = ({ width, height, opacity = 0.8 }) => {
   const centerY = height / 2;
 
   return (
-    <View style={styles.container} pointerEvents="none">
+    <View style={[styles.container, { pointerEvents: 'none' }]}>
       {/* Horizon line */}
       <View 
         style={[

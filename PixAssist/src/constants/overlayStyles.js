@@ -16,10 +16,10 @@ export const OVERLAY_STYLES = {
 };
 
 export const OVERLAY_TYPES = {
-  RULE_OF_THIRDS: 'RULE_OF_THIRDS',
-  CENTER_FOCUS: 'CENTER_FOCUS',
-  HORIZON_LEVEL: 'HORIZON_LEVEL',
-  FORMAT_SQUARE: 'FORMAT_SQUARE',
-  FORMAT_PORTRAIT: 'FORMAT_PORTRAIT',
-  FORMAT_STORY: 'FORMAT_STORY'
+  RULE_OF_THIRDS: 'rule_of_thirds',
+  CENTER_FOCUS: 'center_focus', 
+  HORIZON_LEVEL: 'horizon_level',
+  SQUARE_1_1: 'square_1_1',
+  PORTRAIT_4_5: 'portrait_4_5',
+  STORY_9_16: 'story_9_16',
 };

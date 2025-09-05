@@ -13,12 +13,12 @@ const CameraControls = ({
   onCapture = () => {}
 }) => {
   const overlayOptions = [
-    { key: OVERLAY_TYPES.RULE_OF_THIRDS, label: 'Rule of Thirds' },
-    { key: OVERLAY_TYPES.CENTER_FOCUS, label: 'Center Focus' },
-    { key: OVERLAY_TYPES.HORIZON_LEVEL, label: 'Horizon Level' },
-    { key: OVERLAY_TYPES.FORMAT_SQUARE, label: 'Square (1:1)' },
-    { key: OVERLAY_TYPES.FORMAT_PORTRAIT, label: 'Portrait (4:5)' },
-    { key: OVERLAY_TYPES.FORMAT_STORY, label: 'Story (9:16)' }
+    { key: OVERLAY_TYPES.RULE_OF_THIRDS, label: 'Grid' },
+    { key: OVERLAY_TYPES.CENTER_FOCUS, label: 'Focus' },
+    { key: OVERLAY_TYPES.HORIZON_LEVEL, label: 'Level' },
+    { key: OVERLAY_TYPES.SQUARE_1_1, label: '1:1' },
+    { key: OVERLAY_TYPES.PORTRAIT_4_5, label: '4:5' },
+    { key: OVERLAY_TYPES.STORY_9_16, label: '9:16' }
   ];
 
   return (

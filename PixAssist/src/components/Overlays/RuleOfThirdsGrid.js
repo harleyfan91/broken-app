@@ -11,7 +11,7 @@ const RuleOfThirdsGrid = ({ width, height, opacity = 0.8 }) => {
   const verticalLine2X = width * (1 - gridSpacing);
 
   return (
-    <View style={styles.container} pointerEvents="none">
+    <View style={[styles.container, { pointerEvents: 'none' }]}>
       {/* Horizontal lines */}
       <View 
         style={[

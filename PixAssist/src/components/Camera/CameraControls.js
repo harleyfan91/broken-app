@@ -1,68 +1,71 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Slider } from 'react-native';
+import { View, Text, TouchableOpacity, Slider, StyleSheet } from 'react-native';
 import { OVERLAY_TYPES } from '../../constants/overlayStyles';
 
 const CameraControls = ({ 
   activeOverlay, 
   setActiveOverlay, 
-  opacity, 
-  setOpacity, 
-  isVisible, 
-  setIsVisible 
+  overlayOpacity, 
+  setOverlayOpacity, 
+  overlaysVisible, 
+  setOverlaysVisible 
 }) => {
   const overlayOptions = [
-    { key: OVERLAY_TYPES.RULE_OF_THIRDS, label: 'Grid' },
-    { key: OVERLAY_TYPES.CENTER_FOCUS, label: 'Focus' },
-    { key: OVERLAY_TYPES.HORIZON_LEVEL, label: 'Level' },
-    { key: OVERLAY_TYPES.SQUARE_1_1, label: '1:1' },
-    { key: OVERLAY_TYPES.PORTRAIT_4_5, label: '4:5' },
-    { key: OVERLAY_TYPES.STORY_9_16, label: '9:16' },
+    { key: OVERLAY_TYPES.RULE_OF_THIRDS, label: 'Rule of Thirds' },
+    { key: OVERLAY_TYPES.CENTER_FOCUS, label: 'Center Focus' },
+    { key: OVERLAY_TYPES.HORIZON_LEVEL, label: 'Horizon' },
+    { key: OVERLAY_TYPES.SQUARE_FRAME, label: 'Square' },
+    { key: OVERLAY_TYPES.PORTRAIT_FRAME, label: 'Portrait' },
+    { key: OVERLAY_TYPES.STORY_FRAME, label: 'Story' },
   ];
 
   return (
     <View style={styles.container}>
-      {/* Overlay Toggle */}
-      <TouchableOpacity 
-        style={[styles.toggleButton, { backgroundColor: isVisible ? '#007AFF' : '#666' }]}
-        onPress={() => setIsVisible(!isVisible)}
-      >
-        <Text style={styles.toggleButtonText}>
-          {isVisible ? 'Hide' : 'Show'}
-        </Text>
-      </TouchableOpacity>
-
-      {/* Template Selector */}
-      <View style={styles.templateSelector}>
+      <View style={styles.overlaySelector}>
         {overlayOptions.map((option) => (
           <TouchableOpacity
             key={option.key}
             style={[
-              styles.templateButton,
-              { backgroundColor: activeOverlay === option.key ? '#007AFF' : '#333' }
+              styles.overlayButton,
+              activeOverlay === option.key && styles.activeOverlayButton
             ]}
             onPress={() => setActiveOverlay(option.key)}
           >
-            <Text style={styles.templateButtonText}>{option.label}</Text>
+            <Text style={[
+              styles.overlayButtonText,
+              activeOverlay === option.key && styles.activeOverlayButtonText
+            ]}>
+              {option.label}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      {/* Opacity Slider */}
-      {isVisible && (
-        <View style={styles.opacityControl}>
-          <Text style={styles.opacityLabel}>Opacity: {Math.round(opacity * 100)}%</Text>
-          <Slider
-            style={styles.slider}
-            minimumValue={0.3}
-            maximumValue={1.0}
-            value={opacity}
-            onValueChange={setOpacity}
-            minimumTrackTintColor="#007AFF"
-            maximumTrackTintColor="#666"
-            thumbStyle={styles.sliderThumb}
-          />
-        </View>
-      )}
+      <View style={styles.controls}>
+        <TouchableOpacity
+          style={styles.visibilityButton}
+          onPress={() => setOverlaysVisible(!overlaysVisible)}
+        >
+          <Text style={styles.buttonText}>
+            {overlaysVisible ? 'Hide' : 'Show'} Overlay
+          </Text>
+        </TouchableOpacity>
+
+        {overlaysVisible && (
+          <View style={styles.opacityControl}>
+            <Text style={styles.opacityLabel}>Opacity: {Math.round(overlayOpacity * 100)}%</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={0.3}
+              maximumValue={0.8}
+              value={overlayOpacity}
+              onValueChange={setOverlayOpacity}
+              thumbStyle={styles.sliderThumb}
+              trackStyle={styles.sliderTrack}
+            />
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -70,59 +73,70 @@ const CameraControls = ({
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 60,
+    bottom: 50,
     left: 20,
     right: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    borderRadius: 15,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    borderRadius: 10,
     padding: 15,
-    zIndex: 20,
   },
-  toggleButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    alignSelf: 'center',
-    marginBottom: 15,
-  },
-  toggleButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  templateSelector: {
+  overlaySelector: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
     marginBottom: 15,
   },
-  templateButton: {
-    paddingVertical: 8,
+  overlayButton: {
     paddingHorizontal: 12,
-    borderRadius: 6,
-    minWidth: 45,
-    alignItems: 'center',
+    paddingVertical: 8,
+    borderRadius: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    marginBottom: 8,
   },
-  templateButtonText: {
+  activeOverlayButton: {
+    backgroundColor: '#007AFF',
+  },
+  overlayButtonText: {
     color: 'white',
     fontSize: 12,
-    fontWeight: '500',
+    textAlign: 'center',
+  },
+  activeOverlayButtonText: {
+    fontWeight: 'bold',
+  },
+  controls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  visibilityButton: {
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    backgroundColor: '#007AFF',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   opacityControl: {
-    alignItems: 'center',
+    flex: 1,
+    marginLeft: 15,
   },
   opacityLabel: {
     color: 'white',
-    fontSize: 14,
-    marginBottom: 8,
+    fontSize: 12,
+    marginBottom: 5,
   },
   slider: {
-    width: '100%',
-    height: 30,
+    height: 20,
   },
   sliderThumb: {
     backgroundColor: '#007AFF',
-    width: 20,
-    height: 20,
+  },
+  sliderTrack: {
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
   },
 });
 

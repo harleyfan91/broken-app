@@ -1,15 +1,16 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Slider, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import Slider from '@react-native-community/slider';
 import { OVERLAY_TYPES } from '../../constants/overlayStyles';
 
 const CameraControls = ({
   activeOverlay,
   setActiveOverlay,
-  overlayOpacity,
-  setOverlayOpacity,
-  overlaysVisible,
-  setOverlaysVisible,
-  onCapture
+  opacity,
+  setOpacity,
+  isVisible,
+  setIsVisible,
+  onCapture = () => {}
 }) => {
   const overlayOptions = [
     { key: OVERLAY_TYPES.RULE_OF_THIRDS, label: 'Rule of Thirds' },
@@ -48,13 +49,13 @@ const CameraControls = ({
 
       {/* Opacity Control */}
       <View style={styles.controlRow}>
-        <Text style={styles.label}>Opacity: {Math.round(overlayOpacity * 100)}%</Text>
+        <Text style={styles.label}>Opacity: {Math.round(opacity * 100)}%</Text>
         <Slider
           style={styles.slider}
           minimumValue={0.3}
-          maximumValue={0.8}
-          value={overlayOpacity}
-          onValueChange={setOverlayOpacity}
+          maximumValue={1.0}
+          value={opacity}
+          onValueChange={setOpacity}
           minimumTrackTintColor="#007AFF"
           maximumTrackTintColor="#CCCCCC"
           thumbTintColor="#007AFF"
@@ -65,10 +66,10 @@ const CameraControls = ({
       <View style={styles.buttonRow}>
         <TouchableOpacity
           style={[styles.controlButton, styles.toggleButton]}
-          onPress={() => setOverlaysVisible(!overlaysVisible)}
+          onPress={() => setIsVisible(!isVisible)}
         >
           <Text style={styles.controlButtonText}>
-            {overlaysVisible ? 'Hide Overlays' : 'Show Overlays'}
+            {isVisible ? 'Hide Overlays' : 'Show Overlays'}
           </Text>
         </TouchableOpacity>
 

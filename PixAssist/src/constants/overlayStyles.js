@@ -23,3 +23,26 @@ export const OVERLAY_TYPES = {
   PORTRAIT_4_5: 'portrait_4_5',
   STORY_9_16: 'story_9_16',
 };
+export const OVERLAY_TYPES = {
+  RULE_OF_THIRDS: 'RULE_OF_THIRDS',
+  CENTER_FOCUS: 'CENTER_FOCUS',
+  HORIZON_LEVEL: 'HORIZON_LEVEL',
+  FORMAT_SQUARE: 'FORMAT_SQUARE',
+  FORMAT_PORTRAIT: 'FORMAT_PORTRAIT',
+  FORMAT_STORY: 'FORMAT_STORY'
+};
+
+export const OVERLAY_STYLES = {
+  colors: {
+    primary: 'rgba(255, 255, 255, 0.8)',
+    secondary: 'rgba(255, 255, 255, 0.6)'
+  },
+  lineWeights: {
+    thin: 1,
+    medium: 2,
+    thick: 3
+  },
+  spacing: {
+    gridRatio: 1/3
+  }
+};

@@ -2,69 +2,82 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Slider, StyleSheet } from 'react-native';
 import { OVERLAY_TYPES } from '../../constants/overlayStyles';
 
-const CameraControls = ({ 
-  activeOverlay, 
-  setActiveOverlay, 
-  overlayOpacity, 
-  setOverlayOpacity, 
-  overlaysVisible, 
-  setOverlaysVisible 
+const CameraControls = ({
+  activeOverlay,
+  setActiveOverlay,
+  overlayOpacity,
+  setOverlayOpacity,
+  overlaysVisible,
+  setOverlaysVisible,
+  onCapture
 }) => {
   const overlayOptions = [
     { key: OVERLAY_TYPES.RULE_OF_THIRDS, label: 'Rule of Thirds' },
     { key: OVERLAY_TYPES.CENTER_FOCUS, label: 'Center Focus' },
-    { key: OVERLAY_TYPES.HORIZON_LEVEL, label: 'Horizon' },
-    { key: OVERLAY_TYPES.SQUARE_FRAME, label: 'Square' },
-    { key: OVERLAY_TYPES.PORTRAIT_FRAME, label: 'Portrait' },
-    { key: OVERLAY_TYPES.STORY_FRAME, label: 'Story' },
+    { key: OVERLAY_TYPES.HORIZON_LEVEL, label: 'Horizon Level' },
+    { key: OVERLAY_TYPES.FORMAT_SQUARE, label: 'Square (1:1)' },
+    { key: OVERLAY_TYPES.FORMAT_PORTRAIT, label: 'Portrait (4:5)' },
+    { key: OVERLAY_TYPES.FORMAT_STORY, label: 'Story (9:16)' }
   ];
 
   return (
     <View style={styles.container}>
-      <View style={styles.overlaySelector}>
-        {overlayOptions.map((option) => (
-          <TouchableOpacity
-            key={option.key}
-            style={[
-              styles.overlayButton,
-              activeOverlay === option.key && styles.activeOverlayButton
-            ]}
-            onPress={() => setActiveOverlay(option.key)}
-          >
-            <Text style={[
-              styles.overlayButtonText,
-              activeOverlay === option.key && styles.activeOverlayButtonText
-            ]}>
-              {option.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
+      {/* Template Selector */}
+      <View style={styles.templateRow}>
+        <Text style={styles.label}>Template:</Text>
+        <View style={styles.templateButtons}>
+          {overlayOptions.map((option) => (
+            <TouchableOpacity
+              key={option.key}
+              style={[
+                styles.templateButton,
+                activeOverlay === option.key && styles.activeTemplate
+              ]}
+              onPress={() => setActiveOverlay(option.key)}
+            >
+              <Text style={[
+                styles.templateText,
+                activeOverlay === option.key && styles.activeTemplateText
+              ]}>
+                {option.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
 
-      <View style={styles.controls}>
+      {/* Opacity Control */}
+      <View style={styles.controlRow}>
+        <Text style={styles.label}>Opacity: {Math.round(overlayOpacity * 100)}%</Text>
+        <Slider
+          style={styles.slider}
+          minimumValue={0.3}
+          maximumValue={0.8}
+          value={overlayOpacity}
+          onValueChange={setOverlayOpacity}
+          minimumTrackTintColor="#007AFF"
+          maximumTrackTintColor="#CCCCCC"
+          thumbTintColor="#007AFF"
+        />
+      </View>
+
+      {/* Control Buttons */}
+      <View style={styles.buttonRow}>
         <TouchableOpacity
-          style={styles.visibilityButton}
+          style={[styles.controlButton, styles.toggleButton]}
           onPress={() => setOverlaysVisible(!overlaysVisible)}
         >
-          <Text style={styles.buttonText}>
-            {overlaysVisible ? 'Hide' : 'Show'} Overlay
+          <Text style={styles.controlButtonText}>
+            {overlaysVisible ? 'Hide Overlays' : 'Show Overlays'}
           </Text>
         </TouchableOpacity>
 
-        {overlaysVisible && (
-          <View style={styles.opacityControl}>
-            <Text style={styles.opacityLabel}>Opacity: {Math.round(overlayOpacity * 100)}%</Text>
-            <Slider
-              style={styles.slider}
-              minimumValue={0.3}
-              maximumValue={0.8}
-              value={overlayOpacity}
-              onValueChange={setOverlayOpacity}
-              thumbStyle={styles.sliderThumb}
-              trackStyle={styles.sliderTrack}
-            />
-          </View>
-        )}
+        <TouchableOpacity
+          style={[styles.controlButton, styles.captureButton]}
+          onPress={onCapture}
+        >
+          <Text style={styles.controlButtonText}>Capture</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -73,70 +86,75 @@ const CameraControls = ({
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 50,
-    left: 20,
-    right: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    borderRadius: 10,
-    padding: 15,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 20,
+    paddingBottom: 40,
   },
-  overlaySelector: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+  templateRow: {
     marginBottom: 15,
   },
-  overlayButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 5,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  label: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
     marginBottom: 8,
   },
-  activeOverlayButton: {
-    backgroundColor: '#007AFF',
-  },
-  overlayButtonText: {
-    color: 'white',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  activeOverlayButtonText: {
-    fontWeight: 'bold',
-  },
-  controls: {
+  templateButtons: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: 8,
   },
-  visibilityButton: {
-    paddingHorizontal: 15,
+  templateButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 12,
     paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  activeTemplate: {
     backgroundColor: '#007AFF',
-    borderRadius: 5,
+    borderColor: '#007AFF',
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  opacityControl: {
-    flex: 1,
-    marginLeft: 15,
-  },
-  opacityLabel: {
+  templateText: {
     color: 'white',
     fontSize: 12,
-    marginBottom: 5,
+    fontWeight: '500',
+  },
+  activeTemplateText: {
+    fontWeight: '600',
+  },
+  controlRow: {
+    marginBottom: 15,
   },
   slider: {
-    height: 20,
+    width: '100%',
+    height: 40,
   },
-  sliderThumb: {
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 15,
+  },
+  controlButton: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  toggleButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  captureButton: {
     backgroundColor: '#007AFF',
   },
-  sliderTrack: {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+  controlButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
